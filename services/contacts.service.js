@@ -21,14 +21,25 @@ contactsServer = function () {
     ];
 
 
-    this.getContacts = function(id) {
+    this.getContacts = function () {
+        self = this;
+        return self.contacts;
+    };
+
+    this.getContactById = function (id) {
         self = this;
         if (id) {
-            return self.contacts.find(function (element, index, array) {
+            const value = self.contacts.find(function (element, index, array) {
                 return element.idContact === id;
-            })
+            });
+            if (value) {
+                return value;
+            } else {
+                // throw { code: 404, message: 'Contact Not Found !' }
+                throw new Error('Not Found');
+            }
         } else {
-            return self.contacts;
+            throw { code: 404, message: 'idNotFound' }
         }
     };
 };

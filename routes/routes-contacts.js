@@ -17,15 +17,22 @@ router.get('/', function (req, res, next) {
 
 /**
 * @swagger
-* /contacts/id:
+* /contacts/{contactId}:
 *   get:
-*     description: Returns Contact By Id 
+*     description: Returns Contact By Id
+*     parameters:
+*       - in: path
+*         name: contactId
+*         schema:
+*           type: integer
+*         required: true
+*         escription: Numeric ID of the contact to get
 *     responses:
 *       200:
 *         description: Contact
 */
 router.get('/:id', function (req, res, next) {
-  res.send(new contactsService().getContacts(req.params.id));
+  res.send(new contactsService().getContactById(Number(req.params.id)));
 });
 
 module.exports = router;

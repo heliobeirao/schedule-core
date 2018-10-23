@@ -1,6 +1,4 @@
 var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
@@ -18,13 +16,18 @@ const options = {
 const swaggerSpec = swaggerJSDoc(options);
 
 var app = express();
-const pathToSwaggerUi = require('swagger-ui-dist').absolutePath();
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+app.use(errorHandler);
+
+function errorHandler(err, req, res, next) {
+    res.status(500)
+    res.render('error', { error: err })
+}
 
 app.use('/contacts', contactsRouter);
 
